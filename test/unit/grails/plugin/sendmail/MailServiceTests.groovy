@@ -32,18 +32,18 @@ class MailServiceTests {
         def expectedTo = "test@test.cz"
         def expectedFrom = "ja@test.cz"
         def expectedSubject = "Test Subject"
-        def expectedText = "Test Text"
+        def expectedBody = "Test Text"
         mailService.send {
             to expectedTo
             from expectedFrom
             subject expectedSubject
-            text expectedText
+            body expectedBody
         }
 
         assertEquals(expectedTo, mockDeliveryService.justSent.to[0])
         assertEquals(expectedFrom, mockDeliveryService.justSent.from)
         assertEquals(expectedSubject, mockDeliveryService.justSent.subject)
-        assertEquals(expectedText, mockDeliveryService.justSent.text)
+        assertEquals(expectedBody, mockDeliveryService.justSent.body)
     }
 
     void testDefaults() {

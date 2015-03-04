@@ -16,7 +16,7 @@ class MailGunService implements DeliveryInterface {
         def key = grailsApplication.config.grails.mailgun.api.key
 
         def http = new HTTPBuilder(uri)
-        def postBody = [from: mail.from, to: mail.to, subject: mail.subject, text: mail.text]
+        def postBody = [from: mail.from, to: mail.to, subject: mail.subject, body: mail.body]
         if (mail.cc) {
             postBody["cc"] = mail.cc
         }

@@ -61,11 +61,11 @@ class MailService {
         mail.subject = subject
     }
 
-    def text(String text) {
-        mail.text = text
+    def body(String body) {
+        mail.body = body
     }
 
-    def text(String view, Map model) {
-        mail.text = groovyPageRenderer.render(view: view, model: model)
+    def body(String view, Map model) {
+        mail.body = groovyPageRenderer.render(view: view, model: model)
     }
 }

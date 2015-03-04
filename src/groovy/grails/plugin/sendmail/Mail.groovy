@@ -10,5 +10,5 @@ class Mail {
     List<String> cc
     List<String> bcc
     String subject
-    String text
+    String body
 }
