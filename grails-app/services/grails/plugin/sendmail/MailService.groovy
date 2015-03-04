@@ -2,22 +2,23 @@ package grails.plugin.sendmail
 
 class MailService {
 
-    def mailGunService
+    def grailsApplication
 
     Mail mail
 
-    MailService() {
-
-    }
-
     def send(Closure closure) {
-        Mail mail = new Mail()
+        mail = new Mail()
+        mail.from = grailsApplication.config.grails.mail.default.from
+        mail.replyTo = grailsApplication.config.grails.mail.default.replyTo
 
         closure.delegate = this
         closure.resolveStrategy = Closure.DELEGATE_FIRST
         closure.call()
 
-        mailGunService.sendMail(mail)
+        def serviceName = grailsApplication.config.grails.mail.delivery.interface
+        DeliveryInterface service = grailsApplication.mainContext.getBean(serviceName)
+
+        service.sendMail(mail)
     }
 
     def to(String... to) {
