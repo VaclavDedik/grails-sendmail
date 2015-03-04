@@ -9,9 +9,15 @@ grails.project.dependency.resolution = {
         // excludes 'ehcache'
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
-    legacyResolve false // whether to do a secondary resolve on plugin installation, not advised and here for backwards compatibility
+    legacyResolve true // whether to do a secondary resolve on plugin installation, not advised and here for backwards compatibility
     repositories {
+        inherits true
+
+        grailsPlugins()
+        grailsHome()
         grailsCentral()
+
+        mavenRepo "http://repo.grails.org/grails/repo"
         // uncomment the below to enable remote dependency resolution
         // from public Maven repositories
         //mavenLocal()
@@ -25,6 +31,10 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.21'
+
+        compile('org.codehaus.groovy.modules.http-builder:http-builder:0.7.1') {
+            excludes "commons-logging", "xml-apis", "groovy"
+        }
     }
 
     plugins {

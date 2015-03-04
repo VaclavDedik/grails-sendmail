@@ -1,4 +1,4 @@
-class GrailsMailgunGrailsPlugin {
+class SendMailGrailsPlugin {
     // the plugin version
     def version = "0.1"
     // the version or versions of Grails the plugin is designed for
@@ -9,15 +9,15 @@ class GrailsMailgunGrailsPlugin {
     ]
 
     // TODO Fill in these fields
-    def title = "Grails Mailgun Plugin" // Headline display name of the plugin
-    def author = "Your name"
+    def title = "Grails Mail Plugin" // Headline display name of the plugin
+    def author = "Vaclav Dedik"
     def authorEmail = ""
     def description = '''\
 Brief summary/description of the plugin.
 '''
 
     // URL to the plugin's documentation
-    def documentation = "http://grails.org/plugin/grails-mailgun"
+    def documentation = "http://grails.org/plugin/sendmail"
 
     // Extra (optional) plugin metadata
 
