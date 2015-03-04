@@ -61,4 +61,14 @@ class MailServiceTests {
         }
         assertEquals(expectedFrom, mockDeliveryService.justSent.from)
     }
+
+    void testOverrideAddress() {
+        def expectedFrom = "testoverrideaddress@test.cz"
+        grailsApplication.config.grails.mail.overrideAddress = expectedFrom
+        mailService.send {
+            to "testto@test.cz"
+        }
+
+        assertEquals(expectedFrom, mockDeliveryService.justSent.to[0])
+    }
 }

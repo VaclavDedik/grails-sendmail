@@ -18,6 +18,11 @@ class MailService {
         def serviceName = grailsApplication.config.grails.mail.delivery.interface
         DeliveryInterface service = grailsApplication.mainContext.getBean(serviceName)
 
+        def overrideAddress = grailsApplication.config.grails.mail.overrideAddress
+        if (overrideAddress) {
+            to(overrideAddress)
+        }
+
         service.sendMail(mail)
     }
 
