@@ -3,6 +3,7 @@ package grails.plugin.sendmail
 class MailService {
 
     def grailsApplication
+    def groovyPageRenderer
 
     Mail mail
 
@@ -65,6 +66,6 @@ class MailService {
     }
 
     def text(String view, Map model) {
-        throw new UnsupportedOperationException()
+        mail.text = groovyPageRenderer.render(view: view, model: model)
     }
 }
