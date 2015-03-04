@@ -7,7 +7,7 @@ class MailService {
 
     Mail mail
 
-    def send(Closure closure) {
+    def sendMail(Closure closure) {
         mail = new Mail()
         def defaultFrom = grailsApplication.config.grails.mail.defaultFrom
         def defaultReplyTo = grailsApplication.config.grails.mail.defaultReplyTo

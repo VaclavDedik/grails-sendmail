@@ -33,7 +33,7 @@ class MailServiceTests {
         def expectedFrom = "ja@test.cz"
         def expectedSubject = "Test Subject"
         def expectedBody = "Test Text"
-        mailService.send {
+        mailService.sendMail {
             to expectedTo
             from expectedFrom
             subject expectedSubject
@@ -52,7 +52,7 @@ class MailServiceTests {
 
         grailsApplication.config.grails.mail.defaultFrom = expectedFrom
         grailsApplication.config.grails.mail.defaultReplyTo = expectedReplyTo
-        mailService.send {
+        mailService.sendMail {
             to "testto@test.cz"
         }
 
@@ -60,7 +60,7 @@ class MailServiceTests {
         assertEquals(expectedReplyTo, mockDeliveryService.justSent.replyTo)
 
         expectedFrom = "testnotdefault@test.cz"
-        mailService.send {
+        mailService.sendMail {
             to "testto@test.cz"
             from expectedFrom
         }
@@ -70,7 +70,7 @@ class MailServiceTests {
     void testOverrideAddress() {
         def expectedFrom = "testoverrideaddress@test.cz"
         grailsApplication.config.grails.mail.overrideAddress = expectedFrom
-        mailService.send {
+        mailService.sendMail {
             to "testto@test.cz"
         }
 
