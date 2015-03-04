@@ -8,8 +8,14 @@ class MailService {
 
     def send(Closure closure) {
         mail = new Mail()
-        mail.from = grailsApplication.config.grails.mail.defaultFrom
-        mail.replyTo = grailsApplication.config.grails.mail.defaultReplyTo
+        def defaultFrom = grailsApplication.config.grails.mail.defaultFrom
+        def defaultReplyTo = grailsApplication.config.grails.mail.defaultReplyTo
+        if (defaultFrom) {
+            from(defaultFrom)
+        }
+        if (defaultReplyTo) {
+            replyTo(defaultReplyTo)
+        }
 
         closure.delegate = this
         closure.resolveStrategy = Closure.DELEGATE_FIRST
@@ -19,8 +25,8 @@ class MailService {
             throw new IllegalArgumentException("Mail field 'to' is required.")
         }
 
-        def serviceName = grailsApplication.config.grails.mail.deliveryBean
-        DeliveryInterface service = grailsApplication.mainContext.getBean(serviceName)
+        String serviceName = grailsApplication.config.grails.mail.deliveryBean
+        DeliveryInterface service = (DeliveryInterface) grailsApplication.mainContext.getBean(serviceName)
 
         def overrideAddress = grailsApplication.config.grails.mail.overrideAddress
         if (overrideAddress) {

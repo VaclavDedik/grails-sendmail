@@ -1,8 +1,7 @@
 package grails.plugin.sendmail
 
-
-
 import grails.test.mixin.*
+import org.junit.After
 import org.junit.Before
 
 /**
@@ -22,6 +21,11 @@ class MailServiceTests {
 
         grailsApplication.mainContext.registerMockBean('mockDeliveryService', mockDeliveryService)
         grailsApplication.config.grails.mail.deliveryBean = "mockDeliveryService"
+    }
+
+    @After
+    void tearDown() {
+        grailsApplication.config.clear()
     }
 
     void testSend() {
@@ -57,6 +61,7 @@ class MailServiceTests {
 
         expectedFrom = "testnotdefault@test.cz"
         mailService.send {
+            to "testto@test.cz"
             from expectedFrom
         }
         assertEquals(expectedFrom, mockDeliveryService.justSent.from)
