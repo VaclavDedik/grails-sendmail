@@ -7,6 +7,11 @@ class MailGunService implements DeliveryInterface {
     def grailsApplication
 
     def sendMail(Mail mail) {
+        if (!mail.from) {
+            log.error("Mail to ${mail.to} could not be sent. Missing from field.")
+            throw new IllegalArgumentException("Mail field 'from' is required.")
+        }
+
         def uri = grailsApplication.config.grails.mailgun.api.url
         def key = grailsApplication.config.grails.mailgun.api.key
 
@@ -24,12 +29,12 @@ class MailGunService implements DeliveryInterface {
         }
 
         http.auth.basic("api", key)
-        http.post(body: postBody) { resp ->
-            if (resp.statusLine.statusCode / 100 == 2) {
-                log.info("Mail successfully sent to ${mail.to}.")
-            } else {
-                log.error("Mail to ${mail.to} could not be sent.")
-            }
+        http.handler.success = {
+            log.info("Mail successfully sent to ${mail.to}.")
         }
+        http.handler.failure = { resp ->
+            log.error("Mail to ${mail.to} could not be sent. Status code: ${resp.statusCode}")
+        }
+        http.post(body: postBody)
     }
 }

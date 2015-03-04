@@ -21,7 +21,7 @@ class MailServiceTests {
         mockDeliveryService = new MockDeliveryService()
 
         grailsApplication.mainContext.registerMockBean('mockDeliveryService', mockDeliveryService)
-        grailsApplication.config.grails.mail.delivery.interface = "mockDeliveryService"
+        grailsApplication.config.grails.mail.deliveryBean = "mockDeliveryService"
     }
 
     void testSend() {
@@ -46,8 +46,8 @@ class MailServiceTests {
         def expectedFrom = "testdefault@test.cz"
         def expectedReplyTo = "noreply@test.cz"
 
-        grailsApplication.config.grails.mail.default.from = expectedFrom
-        grailsApplication.config.grails.mail.default.replyTo = expectedReplyTo
+        grailsApplication.config.grails.mail.defaultFrom = expectedFrom
+        grailsApplication.config.grails.mail.defaultReplyTo = expectedReplyTo
         mailService.send {
             to "testto@test.cz"
         }

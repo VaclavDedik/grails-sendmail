@@ -8,14 +8,18 @@ class MailService {
 
     def send(Closure closure) {
         mail = new Mail()
-        mail.from = grailsApplication.config.grails.mail.default.from
-        mail.replyTo = grailsApplication.config.grails.mail.default.replyTo
+        mail.from = grailsApplication.config.grails.mail.defaultFrom
+        mail.replyTo = grailsApplication.config.grails.mail.defaultReplyTo
 
         closure.delegate = this
         closure.resolveStrategy = Closure.DELEGATE_FIRST
         closure.call()
 
-        def serviceName = grailsApplication.config.grails.mail.delivery.interface
+        if (!mail.to) {
+            throw new IllegalArgumentException("Mail field 'to' is required.")
+        }
+
+        def serviceName = grailsApplication.config.grails.mail.deliveryBean
         DeliveryInterface service = grailsApplication.mainContext.getBean(serviceName)
 
         def overrideAddress = grailsApplication.config.grails.mail.overrideAddress
@@ -55,6 +59,6 @@ class MailService {
     }
 
     def text(String view, Map model) {
-        // Not implemented yet
+        throw new UnsupportedOperationException()
     }
 }
