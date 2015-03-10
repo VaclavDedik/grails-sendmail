@@ -50,8 +50,8 @@ class MailServiceTests {
         def expectedFrom = "testdefault@test.cz"
         def expectedReplyTo = "noreply@test.cz"
 
-        grailsApplication.config.grails.mail.defaultFrom = expectedFrom
-        grailsApplication.config.grails.mail.defaultReplyTo = expectedReplyTo
+        grailsApplication.config.grails.mail.from = expectedFrom
+        grailsApplication.config.grails.mail.replyTo = expectedReplyTo
         mailService.sendMail {
             to "testto@test.cz"
         }

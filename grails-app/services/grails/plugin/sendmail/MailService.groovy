@@ -5,12 +5,14 @@ class MailService {
     def grailsApplication
     def groovyPageRenderer
 
+    def pluginConfig
     Mail mail
 
     def sendMail(Closure closure) {
+        pluginConfig = grailsApplication.config.grails.mail
         mail = new Mail()
-        def defaultFrom = grailsApplication.config.grails.mail.defaultFrom
-        def defaultReplyTo = grailsApplication.config.grails.mail.defaultReplyTo
+        def defaultFrom = grailsApplication.config.grails.mail.from
+        def defaultReplyTo = grailsApplication.config.grails.mail.replyTo
         if (defaultFrom) {
             from(defaultFrom)
         }
@@ -37,49 +39,53 @@ class MailService {
         service.sendMail(mail)
     }
 
-    def to(... to) {
+    def to(CharSequence... to) {
         mail.to = to.collect([], {it.toString()})
     }
 
-    def from(from) {
-        mail.from = from
+    def from(CharSequence from) {
+        mail.from = from.toString()
     }
 
-    def replyTo(replyTo) {
-        mail.replyTo = replyTo
+    def replyTo(CharSequence replyTo) {
+        mail.replyTo = replyTo.toString()
     }
 
-    def cc(... cc) {
+    def cc(CharSequence... cc) {
         mail.cc = cc.collect([], {it.toString()})
     }
 
-    def bcc(... bcc) {
+    def bcc(CharSequence... bcc) {
         mail.bcc = bcc.collect([], {it.toString()})
     }
 
-    def subject(subject) {
-        mail.subject = subject
+    def subject(CharSequence subject) {
+        mail.subject = subject.toString()
     }
 
-    def body(body) {
-        mail.body = body
+    def body(CharSequence body) {
+        mail.body = body.toString()
     }
 
-    def body(String view, Map model) {
-        mail.body = groovyPageRenderer.render(view: view, model: model)
-        mail.type = Mail.Type.HTML
+    def body(Map params) {
+        mail.body = groovyPageRenderer.render(view: params["view"], model: params["model"])
     }
 
-    def text(text) {
+    def text(CharSequence text) {
         body(text)
     }
 
-    def html(html) {
+    def text(Map params) {
+        body(params)
+    }
+
+    def html(CharSequence html) {
         body(html)
         mail.type = Mail.Type.HTML
     }
 
-    def html(String view, Map model) {
-        body(view, model)
+    def html(Map params) {
+        body(params)
+        mail.type = Mail.Type.HTML
     }
 }

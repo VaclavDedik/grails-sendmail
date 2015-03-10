@@ -40,7 +40,7 @@ class MailGunService implements DeliveryInterface {
         }
         http.handler.failure = { resp ->
             log.error("Mail to ${mail.to} could not be sent. Status: ${resp.status}, ${resp.statusLine}")
-            String content = resp.entity?.content
+            String content = resp.entity?.content?.text
             if (content) {
                 log.error("Response message: ${content}")
             }
