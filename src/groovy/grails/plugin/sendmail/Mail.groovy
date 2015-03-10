@@ -11,4 +11,9 @@ class Mail {
     List<String> bcc
     String subject
     String body
+    Type type = Type.TEXT
+
+    enum Type {
+        HTML, TEXT
+    }
 }

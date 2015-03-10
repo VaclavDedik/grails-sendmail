@@ -46,3 +46,5 @@ PutObjectStoreDirHere
 # grails specifics
 /plugins
 /null
+/*.zip
+/plugin.xml

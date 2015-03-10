@@ -37,35 +37,49 @@ class MailService {
         service.sendMail(mail)
     }
 
-    def to(String... to) {
-        mail.to = to
+    def to(... to) {
+        mail.to = to.collect([], {it.toString()})
     }
 
-    def from(String from) {
+    def from(from) {
         mail.from = from
     }
 
-    def replyTo(String replyTo) {
+    def replyTo(replyTo) {
         mail.replyTo = replyTo
     }
 
-    def cc(String... cc) {
-        mail.cc = cc
+    def cc(... cc) {
+        mail.cc = cc.collect([], {it.toString()})
     }
 
-    def bcc(String... bcc) {
-        mail.bcc = bcc
+    def bcc(... bcc) {
+        mail.bcc = bcc.collect([], {it.toString()})
     }
 
-    def subject(String subject) {
+    def subject(subject) {
         mail.subject = subject
     }
 
-    def body(String body) {
+    def body(body) {
         mail.body = body
     }
 
     def body(String view, Map model) {
         mail.body = groovyPageRenderer.render(view: view, model: model)
+        mail.type = Mail.Type.HTML
+    }
+
+    def text(text) {
+        body(text)
+    }
+
+    def html(html) {
+        body(html)
+        mail.type = Mail.Type.HTML
+    }
+
+    def html(String view, Map model) {
+        body(view, model)
     }
 }

@@ -1,6 +1,7 @@
 package grails.plugin.sendmail
 
 import groovyx.net.http.HTTPBuilder
+import groovyx.net.http.HttpResponseException
 
 class MailGunService implements DeliveryInterface {
 
@@ -16,7 +17,12 @@ class MailGunService implements DeliveryInterface {
         def key = grailsApplication.config.grails.mailgun.api.key
 
         def http = new HTTPBuilder(uri)
-        def postBody = [from: mail.from, to: mail.to, subject: mail.subject, body: mail.body]
+        def postBody = [from: mail.from, to: mail.to, subject: mail.subject]
+        if (mail.type == Mail.Type.HTML) {
+            postBody["html"] = mail.body
+        } else {
+            postBody["text"] = mail.body
+        }
         if (mail.cc) {
             postBody["cc"] = mail.cc
         }
@@ -33,7 +39,12 @@ class MailGunService implements DeliveryInterface {
             log.info("Mail successfully sent to ${mail.to}.")
         }
         http.handler.failure = { resp ->
-            log.error("Mail to ${mail.to} could not be sent. Status code: ${resp.statusCode}")
+            log.error("Mail to ${mail.to} could not be sent. Status: ${resp.status}, ${resp.statusLine}")
+            String content = resp.entity?.content
+            if (content) {
+                log.error("Response message: ${content}")
+            }
+            throw new HttpResponseException(resp)
         }
         http.post(body: postBody)
     }
